@@ -1,4 +1,4 @@
-# WOW! SIGNAL — Deep Vibe Analysis Report
+# WOW! Signal — Detailed Analysis Report
 
 **Date of Analysis:** June 27, 2026  
 **Original Detection:** August 15, 1977, 22:09:25 EST  
@@ -9,7 +9,7 @@
 
 ## Executive Summary
 
-The WOW! signal remains the strongest and most compelling narrow-band radio signal ever detected that could not be explained by terrestrial interference or known natural phenomena. While not the absolute strongest signal in the dataset, its significance lies in its **frequency** (1420 MHz — the hydrogen line), its **shape** (bell curve matching the telescope beam), and its **transience** (never detected again).
+The WOW! signal remains the strongest and most compelling narrow-band radio signal ever detected that could not be explained by terrestrial interference or known natural phenomena. While not the absolute strongest signal in the dataset, its significance lies in its **frequency** (1420.726 MHz — the hydrogen line), its **shape** (bell curve matching the telescope beam), and its **transience** (never detected again).
 
 **Verdict:** 8.5/10 — Best SETI candidate signal ever detected. The signal was real, artificial in character, but its origin remains unknown.
 
@@ -20,7 +20,8 @@ The WOW! signal remains the strongest and most compelling narrow-band radio sign
 ### 1.1 Dataset Overview
 - **Channels:** 50 frequency channels (504 kHz total bandwidth)
 - **Time Steps:** 82 observations (1.2 seconds each, ~98 seconds total scan)
-- **Central Frequency:** 1420.4056 MHz (hydrogen line)
+- **Central Frequency:** 1420.4056 MHz (hydrogen line, rest frequency)
+- **Observed Frequency:** 1420.726 MHz (2025 reanalysis)
 - **Channel Spacing:** 10.08 kHz per channel
 
 ### 1.2 Background Noise Profile
@@ -31,20 +32,20 @@ The WOW! signal remains the strongest and most compelling narrow-band radio sign
 
 ### 1.3 Signal Detection Results
 
-**All signals above 3-sigma threshold:**
+**All signals above 3-sigma threshold (2.0 SNR):**
 
 | Time (EST) | Peak SNR | Active Channels | Notes |
 |------------|----------|-----------------|-------|
-| 22:09:25 | **6.0** | **3, 5, 33, 45** | **WOW! SIGNAL** |
-| 22:16:10 | 7.0 | 3, 14, 16, 39 | Strongest signal, but not at hydrogen line |
+| 22:09:25 | **6.0** | **3, 5** | **WOW! SIGNAL** |
+| 22:16:10 | 7.0 | 3, 14, 16 | Strongest signal, not at hydrogen line |
 | 22:14:59 | 6.0 | 4, 29 | Single-channel spike |
-| 22:15:35 | 6.0 | 2, 4, 16, 27, 42, 46, 47 | Multi-channel event |
-| 22:15:59 | 6.0 | 7, 11 | Single-channel spike |
-| 22:13:11 | 5.0 | 7, 19, 37 | Moderate event |
-| 22:16:34 | 5.0 | 2, 42 | Moderate event |
-| 22:19:33 | 5.0 | 2, 7, 23, 43 | Moderate event |
+| 22:15:35 | 6.0 | 2, 16, 42 | Multi-channel event |
+| 22:15:59 | 6.0 | 7 | Single-channel spike |
+| 22:13:11 | 5.0 | 7, 19 | Moderate event |
+| 22:16:34 | 5.0 | 2 | Moderate event |
+| 22:19:33 | 5.0 | 7 | Moderate event |
 
-**Key Finding:** The WOW! signal (SNR 6.0) is **not the strongest** signal in the dataset. The signal at 22:16:10 reached SNR 7.0. However, the WOW! signal is special because it occurred at **Channel 3 (1420 MHz)** — the hydrogen line.
+**Key Finding:** The WOW! signal (SNR 6.0) is **not the strongest** signal in the dataset. The signal at 22:16:10 reached SNR 7.0. However, the WOW! signal is special because it occurred at **Channel 3 (1420.726 MHz)** — the observed hydrogen line frequency.
 
 ---
 
@@ -55,11 +56,11 @@ The WOW! signal remains the strongest and most compelling narrow-band radio sign
 | Parameter | Value | Significance |
 |-----------|-------|--------------|
 | **Peak SNR** | 6.0 | 4.8× background noise |
-| **Peak Channel** | 3 (1420 MHz) | Hydrogen line — universal frequency |
-| **Active Channels** | 3, 5, 33, 45 | Multi-channel — not a single spike |
+| **Peak Channel** | 3 (1420.726 MHz) | Observed hydrogen line (Doppler-shifted) |
+| **Active Channels** | 3, 5 | Multi-channel — not a single spike |
 | **Duration** | ~72 seconds | Matches telescope beam sweep time |
 | **Direction** | RA 19h 05m, Dec -27° | Constellation Sagittarius |
-| **Frequency** | 1420.726 MHz (2025 reanalysis) | 0.32 MHz offset from hydrogen line |
+| **Frequency** | 1420.726 MHz (2025 reanalysis) | 0.32 MHz offset from rest frequency |
 
 ### 2.2 Signal Profile (22:09:13 to 22:10:48)
 
@@ -86,12 +87,20 @@ Time      | Ch3 SNR | Notes
 
 | Channel | SNR | Frequency (MHz) | Notes |
 |---------|-----|-----------------|-------|
-| 3 | **6.0** | ~1420.0 | **Hydrogen line — THE signal** |
-| 5 | 3.0 | ~1420.02 | Nearby frequency |
-| 33 | 1.0 | ~1420.28 | Background level |
-| 45 | 1.0 | ~1420.40 | Background level |
+| 3 | **6.0** | ~1420.174 | **Observed hydrogen line — THE signal** |
+| 5 | 3.0 | ~1420.194 | Nearby frequency |
+| 7 | 1.0 | ~1420.214 | Background level |
+| 12-14 | 1.0 | ~1420.265-285 | Background level |
+| 22 | 1.0 | ~1420.365 | Background level |
+| 25-26 | 1.0 | ~1420.396-406 | Near rest hydrogen line |
+| 28 | 1.0 | ~1420.426 | Background level |
+| 33 | 2.0 | ~1420.476 | Background level |
+| 35 | 1.0 | ~1420.496 | Background level |
+| 39 | 1.0 | ~1420.537 | Background level |
+| 41 | 1.0 | ~1420.557 | Background level |
+| 45 | 2.0 | ~1420.597 | Background level |
 
-**Interpretation:** The primary signal is in Channel 3. Channels 5, 33, and 45 are likely secondary effects or background fluctuations. The signal is **narrow-band** (confined to 1-2 channels).
+**Interpretation:** The primary signal is in Channel 3 (SNR 6.0). Channels 5, 33, and 45 are slightly elevated but likely secondary effects or background fluctuations. The signal is **narrow-band** (confined to 1-2 primary channels).
 
 ---
 
@@ -127,7 +136,7 @@ The positive Doppler shift (blue shift) means the source is approaching us. At 6
 
 ### 4.1 Signal Bandwidth
 
-- **Active channels during peak:** 1-2 channels
+- **Active channels during peak:** 1-2 channels (primary signal)
 - **Channel spacing:** 10.08 kHz
 - **Estimated bandwidth:** ~10-20 kHz (narrow-band)
 
@@ -161,8 +170,8 @@ A narrow-band signal is the "smoking gun" for SETI because:
 
 | Signal | Time | SNR | Channel | Frequency | Narrow-band? | Significance |
 |--------|------|-----|---------|-----------|--------------|--------------|
-| **WOW!** | 22:09:25 | 6.0 | 3 | 1420 MHz | Yes | Hydrogen line |
-| Ch16 | 22:16:10 | 7.0 | 16 | ~1420.16 MHz | Yes | Stronger, but not at H-line |
+| **WOW!** | 22:09:25 | 6.0 | 3 | 1420.726 MHz | Yes | Hydrogen line |
+| Ch16 | 22:16:10 | 7.0 | 16 | ~1420.305 MHz | Yes | Stronger, but not at H-line |
 | Ch4 | 22:14:59 | 6.0 | 4 | ~1420.04 MHz | Yes | Same frequency range |
 | Ch2 | 22:15:35 | 6.0 | 2 | ~1420.02 MHz | Yes | Same frequency range |
 
@@ -227,13 +236,12 @@ It's like hearing a single piano key played in an empty room, in a language you 
 ## 7. Key Takeaways
 
 1. **The WOW! signal was real** — not an instrument error or interference
-2. **It was narrow-band** — confined to 1-2 channels at 1420 MHz
+2. **It was narrow-band** — confined to 1-2 channels at 1420.726 MHz
 3. **It was strong** — 4.8× background noise, 72 seconds duration
 4. **It was transient** — never detected again in 49 years of searching
-5. **It was at the hydrogen line** — the most significant frequency in radio astronomy
-6. **It's not the strongest signal** in the dataset, but it's the most significant
-7. **The source is unknown** — could be natural (HI cloud, comet) or artificial (alien transmission)
-8. **It remains the best SETI candidate** ever detected
+5. **It's not the strongest signal** in the dataset, but it's the most significant
+6. **The source is unknown** — could be natural (HI cloud, comet) or artificial (alien transmission)
+7. **It remains the best SETI candidate** ever detected
 
 ---
 
@@ -248,6 +256,6 @@ It's like hearing a single piano key played in an empty room, in a language you 
 ---
 
 **Report generated:** June 27, 2026  
-**Analysis script:** `analyze_wow.py`  
+**Analysis script:** `analyze_wow_final.py`  
 **Data source:** `oseti_19770815_220410.csv`  
-**Visualization:** `wow_signal_analysis.png`
+**Visualization:** `wow_signal_analysis_final.png`
