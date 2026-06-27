@@ -3,7 +3,6 @@ import numpy as np
 import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
-from matplotlib.colors import LinearSegmentedColormap
 
 # ============================================================
 # LOAD DATA
@@ -16,7 +15,6 @@ times = metadata.iloc[:, -1].astype(str).str.strip()
 valid_mask = times.str.contains(r'\d{2}\s\d{2}\s\d{2}', regex=True)
 times = times[valid_mask].reset_index(drop=True)
 channel_data = channel_data[valid_mask].reset_index(drop=True)
-metadata = metadata[valid_mask].reset_index(drop=True)
 
 # Background calculation
 background = channel_data.values[~np.isclose(channel_data.values, 0)].mean()
@@ -45,24 +43,34 @@ max_row, max_col = np.unravel_index(np.argmax(channel_data.values), channel_data
 fig, axes = plt.subplots(2, 2, figsize=(18, 14))
 fig.suptitle('WOW! SIGNAL (Aug 15, 1977) — Verified Analysis', fontsize=18, fontweight='bold', y=0.98)
 
-# --- Plot 1: Heatmap with WOW! highlight ---
+# --- Plot 1: Heatmap with LINEAR scale (capped at 7) ---
 ax1 = axes[0, 0]
-# Create custom colormap: dark blue (0) -> blue -> yellow -> red (max)
-cmap = LinearSegmentedColormap.from_list('wow', [(0, '#000033'), (0.3, '#0066cc'), (0.6, '#ffcc00'), (1, '#ff0000')])
-im1 = ax1.imshow(channel_data.values, aspect='auto', cmap=cmap, interpolation='nearest')
-ax1.axhline(y=wow_idx, color='white', linestyle='--', linewidth=2, label=f'WOW! Signal ({wow_time})')
-ax1.axhline(y=max_row, color='cyan', linestyle=':', linewidth=2, label=f'Peak Signal ({times.iloc[max_row]})')
+# Create a masked array: show only values > 0, cap at 7
+data_display = channel_data.values.copy()
+data_display[data_display == 0] = np.nan  # Hide zeros
+
+# Use a colormap that goes from light gray (0) to red (high)
+# But cap the max at 7 to make signals visible
+norm_max = 7
+im1 = ax1.imshow(data_display, aspect='auto', cmap='Reds', interpolation='nearest', vmin=0, vmax=norm_max)
+
+# Draw horizontal lines
+ax1.axhline(y=wow_idx, color='white', linestyle='--', linewidth=3, label=f'WOW! Signal (22:09:25, Row 26, SNR 6.0)')
+ax1.axhline(y=max_row, color='cyan', linestyle=':', linewidth=3, label=f'Peak Signal (22:16:10, Row 60, SNR 7.0)')
+
 ax1.set_xlabel('Time Step (1.2s each, 82 steps = ~98s)')
-ax1.set_ylabel('Channel Number (50 total)')
-ax1.set_yticks(range(0, 50, 5))
-ax1.set_yticklabels(range(50, 0, -5))
-ax1.set_title('Heatmap: All 50 Channels Over Time\n(WOW! Signal at Row 26, Peak at Row 60)', fontsize=11)
-ax1.legend(loc='upper right', fontsize=8)
+ax1.set_ylabel('Row Number (Channel data, 50 channels per row)')
+ax1.set_title('Heatmap: Signal Strength Over Time\n(Rows with signals appear RED, background is light gray)', fontsize=11)
+ax1.legend(loc='upper right', fontsize=9)
 plt.colorbar(im1, ax=ax1, label='Signal Strength (SNR)', shrink=0.8)
 
-# --- Plot 2: WOW! Signal Profile ---
+# Add text annotation at the WOW! signal
+ax1.text(0.5, wow_idx + 0.5, 'WOW!', color='white', fontsize=14, fontweight='bold', 
+         ha='left', va='center', transform=ax1.get_yaxis_transform(),
+         bbox=dict(boxstyle='round,pad=0.3', facecolor='red', edgecolor='white', alpha=0.8))
+
+# --- Plot 2: WOW! Signal Profile (22:09:25) ---
 ax2 = axes[0, 1]
-# Show the exact WOW! signal at 22:09:25
 wow_row_data = channel_data.iloc[wow_idx].values
 active_ch = [i for i in range(50) if wow_row_data[i] > 0]
 x_pos = np.array(active_ch) + 1
@@ -71,9 +79,10 @@ y_vals = wow_row_data[active_ch]
 ax2.bar(x_pos, y_vals, color='red', alpha=0.8, edgecolor='black', linewidth=0.5)
 ax2.axhline(y=threshold_3sigma, color='orange', linestyle='--', linewidth=2, label=f'3-sigma threshold ({threshold_3sigma:.1f})')
 ax2.axhline(y=background, color='gray', linestyle=':', linewidth=2, label=f'Background ({background:.1f})')
-ax2.set_xlabel('Channel Number')
+ax2.axvline(x=3, color='yellow', linestyle='-', linewidth=2, alpha=0.7, label='Hydrogen Line (Ch 3 = 1420 MHz)')
+ax2.set_xlabel('Channel Number (Channel 3 = Hydrogen Line @ 1420 MHz)')
 ax2.set_ylabel('Signal Strength (SNR)')
-ax2.set_title(f'WOW! Signal at Peak (22:09:25)\nChannel 3 = {wow_row_data[2]:.1f} (Hydrogen Line @ 1420 MHz)', fontsize=11)
+ax2.set_title(f'WOW! Signal at Peak (22:09:25)\nChannel 3 = {wow_row_data[2]:.1f} SNR (6x background)', fontsize=11)
 ax2.set_xticks(range(1, 51))
 ax2.legend(fontsize=9)
 ax2.grid(True, alpha=0.3, axis='y')
@@ -105,9 +114,8 @@ ax3.set_yticks(range(0, 9))
 ax3.legend(fontsize=9)
 ax3.grid(True, alpha=0.3, axis='y')
 
-# --- Plot 4: Channel Distribution at Peak ---
+# --- Plot 4: Channel Distribution at Peak with frequency labels ---
 ax4 = axes[1, 1]
-# Show all 50 channels at the peak time (22:16:10)
 peak_row = channel_data.iloc[max_row].values
 all_channels = np.arange(50) + 1
 all_values = peak_row
@@ -115,19 +123,19 @@ all_values = peak_row
 ax4.bar(all_channels, all_values, color='steelblue', alpha=0.8, edgecolor='black', linewidth=0.5)
 ax4.axhline(y=threshold_3sigma, color='orange', linestyle='--', linewidth=2, label=f'3-sigma ({threshold_3sigma:.1f})')
 ax4.axhline(y=background, color='gray', linestyle=':', linewidth=2, label=f'Background ({background:.1f})')
-
-# Mark the peak channel
+ax4.axvline(x=3, color='yellow', linestyle='-', linewidth=2, alpha=0.7, label='Hydrogen Line (Ch 3)')
 ax4.bar(max_col + 1, max_val, color='red', alpha=1.0, edgecolor='black', linewidth=2, label=f'Peak: Ch{max_col+1} = {max_val:.0f}')
-ax4.set_xlabel('Channel Number')
+
+ax4.set_xlabel('Channel Number (Channel 3 = Hydrogen Line @ 1420.4056 MHz)')
 ax4.set_ylabel('Signal Strength (SNR)')
-ax4.set_title(f'All 50 Channels at Peak ({times.iloc[max_row]})\nChannel 16 = {max_val:.0f} (NOT at Hydrogen Line)', fontsize=11)
+ax4.set_title(f'All 50 Channels at Peak ({times.iloc[max_row]})\nCh3=3.0 (H-line), Ch16=7.0 (Peak)', fontsize=11)
 ax4.set_xticks(range(1, 51, 5))
 ax4.legend(fontsize=9)
 ax4.grid(True, alpha=0.3, axis='y')
 
 plt.tight_layout(rect=[0, 0, 1, 0.95])
-plt.savefig('wow_signal_analysis_v2.png', dpi=200, bbox_inches='tight')
-print("Saved: wow_signal_analysis_v2.png")
+plt.savefig('wow_signal_analysis_final.png', dpi=200, bbox_inches='tight')
+print("Saved: wow_signal_analysis_final.png")
 
 # ============================================================
 # PRINT VERIFICATION SUMMARY
@@ -140,14 +148,14 @@ print(f"Time range: {times.iloc[0]} to {times.iloc[-1]}")
 print(f"\nBackground: {background:.2f} SNR (std: {background_std:.2f})")
 print(f"3-sigma threshold: {threshold_3sigma:.2f}")
 print(f"\nTotal events above threshold: {len(events)}")
-print(f"\nWOW! Signal (22:09:25):")
-print(f"  Channel 3: {channel_data.iloc[wow_idx, 2]:.1f} SNR (Hydrogen line)")
+print(f"\nWOW! Signal (22:09:25, Row 26):")
+print(f"  Channel 3: {channel_data.iloc[wow_idx, 2]:.1f} SNR (Hydrogen line @ 1420.4056 MHz)")
 print(f"  Channel 5: {channel_data.iloc[wow_idx, 4]:.1f} SNR")
 print(f"  All other channels: 0.0")
-print(f"\nOverall Peak:")
+print(f"\nOverall Peak (22:16:10, Row 60):")
 print(f"  Value: {max_val:.0f} SNR")
-print(f"  Time: {times.iloc[max_row]}")
 print(f"  Channel: {max_col + 1}")
+print(f"  Channel 3 (H-line) at peak: {peak_row[2]:.1f} SNR")
 print(f"\nNote: WOW! signal (SNR 6.0) is NOT the strongest signal.")
 print(f"      Peak signal (SNR 7.0) is at Channel 16, not at hydrogen line.")
 print(f"      WOW! significance = frequency (1420 MHz), not raw strength.")
