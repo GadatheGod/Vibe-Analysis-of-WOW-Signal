@@ -280,6 +280,19 @@ A fast scan of the original dataset for signals in the WOW! beam direction (RA 1
 **Total detections:** 0  
 **Conclusion:** The WOW! signal remains a one-time event.
 
+### 7.3 Has the Source Moved?
+
+| Parameter | Value |
+|-----------|-------|
+| Distance traveled toward us (49 yrs) | 104 million km (0.00001 light-years) |
+| Angular shift (transverse) | ~0.02 arcseconds |
+| Big Ear beam width | 360 arcseconds |
+| Movement in beam widths | 0.00006 |
+
+**Key insight:** The source is still well within the original beam. Searching the same coordinates would still work.
+
+**But the frequency has shifted:** As the source got closer, its Doppler shift decreased. The signal was detected at 1420.726 MHz in 1977; today it would be detected at a slightly **lower** frequency (perhaps 1420.725 MHz). This is a tiny change, but it matters for narrow-band searches.
+
 ## 8. References
 
 - Méndez, A., Ortiz-Ceballos, K., & Zuluaga, J. I. (2024). *Arecibo Wow! I: An Astrophysical Explanation for the Wow! Signal*. arXiv:2408.08513
