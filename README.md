@@ -1,6 +1,6 @@
 # Vibe Analysis of WOW! Signal
 
-![WOW! Signal Analysis](wow_signal_analysis_v2.png)
+![WOW! Signal Analysis](wow_signal_analysis_v3.png)
 
 A comprehensive vibe analysis of the famous **WOW! Signal** — the strongest narrow-band radio signal ever detected that could not be explained by terrestrial interference or known natural phenomena.
 
